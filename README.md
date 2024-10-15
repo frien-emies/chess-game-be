@@ -15,10 +15,10 @@ that as well.
 
 ### Creating a New Virtual Environment
 1. Install `virtualenv` (if not already installed). `virtualenv` is a tool to create isolated Python environments which we will use for setting up this repository.
-To install run `pip install virtualenv`.
+To install run `pip3 install virtualenv`.
 
-2. Run the following command to create a virtual environment in the root directory of the project (`/chess-game-be`): `python -m venv venv`
-Note that if you are on a Mac or Linux os the command `python` must be followed by a three, so that it looks like `python3`. 
+2. Run the following command to create a virtual environment in the root directory of the project (`/chess-game-be`): `python3 -m venv venv`
+Note that if you are on a Mac or Linux os the command `python3` must be followed by a three, so that it looks like `python3`. 
 This will create a directory called venv in your project folder, which contains the isolated Python environment.
 
 3. Run the following command to activate the virtual environment on your operating system:
@@ -28,8 +28,8 @@ This will create a directory called venv in your project folder, which contains 
 Once activated, your terminal prompt should change, and you'll see (venv) at the beginning of the command line, indicating that you're working inside the virtual environment.
 
 4. Now we must install all project requirements from the `requirements.txt` file. 
-To install run `pip install -r requirements.txt`
-We can check we installed all our requirements by running `pip list` and this will show all packages within the virtual environment. 
+To install run `pip3 install -r requirements.txt`
+We can check we installed all our requirements by running `pip3 list` and this will show all packages within the virtual environment. 
 
 ### Deactivating Existing Environment
 1. To deactivate the virtual environment simply run `deactivate`. This will return you to the global Python environment. 
