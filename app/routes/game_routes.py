@@ -24,8 +24,8 @@ def create_game():
   new_game = Game(
       turn_number=data.get('turn_number', 1),
       turn_color=data.get('turn_color', 'white'),
-      previous_fen=data.get('previous_fen', ''),
-      current_fen=data.get('current_fen', ''),
+      previous_fen=data.get('previous_fen', 'None'),
+      current_fen=data.get('current_fen', 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'),
       white_player_id=data.get('white_player_id'),
       black_player_id=data.get('black_player_id')
   )
