@@ -92,4 +92,4 @@ def send_game_data_to_backend(game_data):
 
 # Run the Flask app
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)      #change parameters to use debug=True when testing (app, debug=True)
