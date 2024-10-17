@@ -41,6 +41,8 @@ def handle_start_game(data):
     game = Game(
         turn_number=1,
         turn_color='white',
+        previous_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 
+        current_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         white_player_id=data['white_player_id'],
         black_player_id=data['black_player_id'],
         white_player_user_name=data['white_player_user_name'],
