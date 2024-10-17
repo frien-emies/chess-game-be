@@ -48,5 +48,29 @@ Run the following command to create the requirements.txt file: `pip3 install -r 
 The Chess Game Backend API has x endpoints. 
 
 ### `Return a Games Current State by ID`
-To have a specific games state returned  must hit the following API endpoint `/api/v1/games/:id?turn=turn_number`. T
+To have a specific games state returned you must hit the following API endpoint `/api/v1/games/:game_id` where the id corresponds to a particular games id. 
+
+Here is a sample response for hitting the following endpoint:
+`/api/v1/games/1`
+
+`        {
+            "data": {
+            "id": 1,
+            "type": 'game_information',
+            "attributes": {
+                'turn_number': '2',
+                'turn_color': 'White',
+                'white_player_id': '2',
+                'black_player_id': '1',
+                'white_player_user_name': 'thegrandmaster@gmail.com',
+                'black_player_user_name': 'chesslord@chess.com,
+                'white_player_points': '0',
+                'black_player_points': '0',
+                'game_complete': 'False',
+                'game_outcome': '',
+                'game_champion': ''
+            }
+        }
+    }
+`
 
