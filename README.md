@@ -41,6 +41,9 @@ We can check we installed all our requirements by running `pip3 list` and this w
 - Windows (PowerShell): `.\venv\Scripts\Activate`
 You can then follow steps 3-4 for setting up the virtual environment if you need to do additional configuration. 
 
+### Installing and Creating the requirements.txt file
+Run the following command to create the requirements.txt file: `pip3 install -r requirements.txt`.
+
 ## Endpoints and JSON Contract
 The Chess Game Backend API has x endpoints. 
 
