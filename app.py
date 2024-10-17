@@ -94,34 +94,6 @@ def send_game_data_to_backend(game_data):
     except requests.exceptions.RequestException as e:
         print(f"Failed to connect to backend: {e}")
 
-@app.route('/games/<game_id>', methods=['GET'])
-def get_game_state(game_id):
-    game = Game.query.get(game_id)
-    if not game:
-        return jsonify({'message': 'Game not found'}), 404
-
-    return jsonify(
-        {
-            "data": {
-            "id": game.id,
-            "type": 'game_information',
-            "attributes": {
-                'turn_number': game.turn_number,
-                'turn_color': game.turn_color,
-                'white_player_id': game.white_player_id,
-                'black_player_id': game.black_player_id,
-                'white_player_user_name': game.white_player_user_name,
-                'black_player_user_name': game.black_player_user_name,
-                'white_player_points': game.white_player_points,
-                'black_player_points': game.black_player_points,
-                'game_complete': game.game_complete,
-                'game_outcome': game.game_outcome,
-                'game_champion': game.game_champion
-            }
-        }
-    }
-)
-
 # Run the Flask app
 if __name__ == '__main__':
     socketio.run(app)      #change parameters to use debug=True when testing (app, debug=True)
