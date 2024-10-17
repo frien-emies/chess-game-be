@@ -83,9 +83,9 @@ def handle_move(data):
         'game_complete': game.game_complete
     })
 
-# Function to send game data to the Rails backend
+# Function to send game data to the Rails backend (request to rails backend)
 def send_game_data_to_backend(game_data):
-    url = "http://localhost:3000/api/v1/games"  # Local Rails API URL
+    url = "https://chess-with-frein-emies-e45d9fb62d80.herokuapp.com/api/v1/games"  # Production API, change to local host for development 
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.post(url, json=game_data, headers=headers)
