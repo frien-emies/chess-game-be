@@ -19,6 +19,8 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     turn_number = db.Column(db.Integer, nullable=False)
     turn_color = db.Column(db.String(10), nullable=False)
+    previous_fen = db.Column(db.String(100), nullable=True)
+    current_fen = db.Column(db.String(100), nullable=False)
     white_player_id = db.Column(db.Integer, nullable=False)
     black_player_id = db.Column(db.Integer, nullable=False)
     white_player_user_name = db.Column(db.String(50), nullable=False)
