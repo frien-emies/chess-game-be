@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit, send 
 import requests
 
 # Initialize the Flask app
@@ -87,8 +87,12 @@ def handle_move(data):
 def send_game_data_to_backend(game_data):
     url = "http://localhost:3000/api/v1/games"  # Local Rails API URL
     headers = {"Content-Type": "application/json"}
-    response = requests.post(url, json=game_data, headers=headers)
-    return response.status_code
+    try:
+        response = requests.post(url, json=game_data, headers=headers)
+        if response.status_code != 200:
+            print(f"Error sending data to backend: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to connect to backend: {e}")
 
 # Run the Flask app
 if __name__ == '__main__':
