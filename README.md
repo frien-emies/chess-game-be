@@ -112,6 +112,6 @@ Here is a sample response for hitting the following endpoint:
 
 ### Deployment
 
-#### Deployed Site: [Vercel Application](https://chess-game-2fpjlc9pn-jcl461437s-projects.vercel.app/)
+#### Deployed Site: [Vercel Application](https://chess-game-2q7yxb21w-jcl461437s-projects.vercel.app/)
 
 
