@@ -28,7 +28,8 @@ This will create a directory called venv in your project folder, which contains 
 Once activated, your terminal prompt should change, and you'll see (venv) at the beginning of the command line, indicating that you're working inside the virtual environment.
 
 4. Now we must install all project requirements from the `requirements.txt` file. 
-To install run `pip3 install -r requirements.txt`
+To install run `pip3 install -r requirements.txt`. Make sure you install the versions specifically listed in the `requirements.txt` file, otherwise the dependencies and
+versioning of the libraries listed in the .txt file will not merge correctly and will cause your application to crash. 
 We can check we installed all our requirements by running `pip3 list` and this will show all packages within the virtual environment. 
 
 ### Deactivating Existing Environment
