@@ -100,3 +100,18 @@ Here is a sample response for hitting the following endpoint:
     }
 `
 
+## Other Information: 
+
+### Versioning 
+
+#### API Version: V1 
+
+#### Python Version: Python 3.13
+
+#### Flask Version: Flask 2.1.2
+
+### Deployment
+
+#### Deployed Site: [Vercel Application](https://chess-game-2fpjlc9pn-jcl461437s-projects.vercel.app/)
+
+
