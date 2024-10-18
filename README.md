@@ -44,6 +44,31 @@ You can then follow steps 3-4 for setting up the virtual environment if you need
 ### Installing and Creating the requirements.txt file
 Run the following command to create the requirements.txt file: `pip3 install -r requirements.txt`.
 
+## Using the Flask Command Shell
+To use the Flask Command Shell run `flask shell` from the command line. This will allow you to manipulate various elements of the application as detailed below.
+
+### Manipulating the Database with the Flask Command Shell
+The Flask Command Shell has numerous commands for manipulating the applications database. To do so you must first open the command shell from the command line by running `flask shell`.
+Following this you must import the database tables you wish to manipulate. The syntax for doing so follows conventional Python syntax for importing files. For instance, to import the database
+you would run the following line in the Flask Command Shell: `from app import db`.
+
+After importing the database, you will need to import your models to access the database tables. In this application the command to do so will look like this: `from app import Game`. This will import
+the applications Game model by specifying the Model class.
+
+You can exit the Flask Command Shell at any time by clicking the CMD + D keys at the same time. 
+
+#### Dropping the Entire Database
+To drop all the tables in the database you can run the following command from the the Flask Command Shell: `db.drop_all()`. 
+
+#### Creating the Entire Database
+To create all the tables in the database you can run the following command from the the Flask Command Shell: `db.create_all()`. This will create al lthe tables based on what models you have present in 
+your application. 
+
+#### Deleting All Records from A Table
+To delete all the records for a specific tablein the database, run the following commands: `db.session.query(table_name).delete()`. In this case table_name is the name of the class model `Game`. 
+
+After running the above command commit the changes to the database: `db.session.commit()`. 
+
 ## Endpoints and JSON Contract
 The Chess Game Backend API has x endpoints. 
 
