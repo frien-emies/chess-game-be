@@ -40,6 +40,16 @@ with app.app_context():
     db.create_all()
 
 # WebSocket handler for starting a new game
+
+@socketio.on('connect')
+def handle_connect(socket):
+    print(socket)
+    qstring = socket.get('QUERY_STRING')
+    print(">>>>>>>>>>")
+    print(qstring)
+    print(">>>>>>>>>>")
+    
+
 @socketio.on('start_game')
 def handle_start_game(data):
     game = Game(
@@ -69,6 +79,7 @@ def handle_start_game(data):
     emit('game_started', game_data, broadcast=True)
 
 # WebSocket handler for making a move
+
 @socketio.on('make_move')
 def handle_move(data):
     game_id = data['game_id']
