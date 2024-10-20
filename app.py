@@ -45,6 +45,19 @@ with app.app_context():
 def handle_connect():
     q_param = request.args.get('q')
     game = Game.query.get(q_param)  
+    game_data = {
+        'game_id': game.id,
+        'turn_number': game.turn_number,
+        'turn_color': game.turn_color,
+        'current_fen': game.current_fen,
+        'previous_fen': game.previous_fen,
+        'white_player_points': game.white_player_points,
+        'black_player_points': game.black_player_points,
+        'game_complete': game.game_complete,
+        'game_outcome': game.game_outcome,
+        'game_champion': game.game_champion
+}
+    emit('game_info', game_data)
 
 @socketio.on('start_game')
 def handle_start_game(data):
@@ -69,7 +82,12 @@ def handle_start_game(data):
         'turn_number': game.turn_number,
         'turn_color': game.turn_color,
         'current_fen': game.current_fen,
-        'previous_fen': game.previous_fen
+        'previous_fen': game.previous_fen,
+        'white_player_points': game.white_player_points,
+        'black_player_points': game.black_player_points,
+        'game_complete': game.game_complete,
+        'game_outcome': game.game_outcome,
+        'game_champion': game.game_champion
     }
     
     emit('game_started', game_data, broadcast=True)
