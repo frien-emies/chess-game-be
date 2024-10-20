@@ -89,7 +89,9 @@ def handle_move(data):
         'previous_fen': game.previous_fen,
         'white_player_points': game.white_player_points,
         'black_player_points': game.black_player_points,
-        'game_complete': game.game_complete
+        'game_complete': game.game_complete,
+        'game_outcome': game.game_outcome,
+        'game_champion': game.game_champion
     }
 
     emit('move_made', game_data, broadcast=True)
