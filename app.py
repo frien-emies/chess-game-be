@@ -1,17 +1,21 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, send 
+from flask_cors import CORS
 import requests
 
 # Initialize the Flask app
 app = Flask(__name__)
+CORS(app)
+
 
 # SQLite Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chess_game.db'  # SQLite database file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 # Initialize extensions
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 db = SQLAlchemy(app)
 
 # Define the Game model for SQLite, add more columns if needed FEN etc.
@@ -106,6 +110,7 @@ def send_latest(socket):
         'previous_fen': game.previous_fen
     }
         socket.emit('latest', game_data)
+
 
 # Function to send game data to the Rails backend (request to rails backend)
 def send_game_data_to_backend(game_data):
