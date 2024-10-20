@@ -123,13 +123,15 @@ def handle_end_game(data):
     db.session.commit()
     
     emit('disconnected', data, broadcast=True)
+    
     game_data = {
         'game_id': game.id,
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion,
         'game_complete': game.game_complete,
         'turn_number': game.turn_number,
-        'turn_color': game.turn_color
+        'turn_color': game.turn_color,
+        'current_fen': game.current_fen,
     }
     
     disconnect()
