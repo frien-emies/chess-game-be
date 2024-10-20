@@ -99,11 +99,11 @@ def handle_end_game(data):
     game = Game.query.get(game_id)
     
     if not game:
-        emit('error', {'message': 'Game not found'})
+        emit('error', {'message': 'Game not found'}), 404
         return
     
     if game.game_complete:
-        emit('error', {'message': 'Game already completed'})
+        emit('error', {'message': 'Game already completed'}), 400
         return
     
     board = chess.Board(fen) # using chess engine 
