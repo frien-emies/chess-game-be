@@ -57,7 +57,7 @@ def handle_connect():
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion
 }
-    emit('game_info', game_data)
+    emit(f'game_info_{q_param}' , game_data)
 
 @socketio.on('start_game')
 def handle_start_game(data):
