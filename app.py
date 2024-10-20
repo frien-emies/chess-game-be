@@ -44,9 +44,7 @@ with app.app_context():
 @socketio.on('connect')
 def handle_connect():
     q_param = request.args.get('q')
-    print(q_param)
-   
-    
+    game = Game.query.get(q_param)  
 
 @socketio.on('start_game')
 def handle_start_game(data):
