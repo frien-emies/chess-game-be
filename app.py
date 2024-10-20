@@ -53,11 +53,13 @@ def handle_start_game(data):
     )
     db.session.add(game)
     db.session.commit()
-    # Need to confer with front end team on what data to send
+
     game_data = {
         'game_id': game.id,
         'turn_number': game.turn_number,
-        'turn_color': game.turn_color
+        'turn_color': game.turn_color,
+        'current_fen': game.current_fen,
+        'previous_fen': game.previous_fen
     }
     
     emit('game_started', game_data, broadcast=True)
@@ -66,7 +68,7 @@ def handle_start_game(data):
 @socketio.on('make_move')
 def handle_move(data):
     game_id = data['game_id']
-    move = data['move']
+    fen = data['fen']  # Receive FEN from the front-end move
 
     game = Game.query.get(game_id)
     if not game:
@@ -74,18 +76,36 @@ def handle_move(data):
         return
 
     game.turn_number += 1
+    game.previous_fen = game.current_fen
+    game.current_fen = fen  # Update current FEN from the move
     game.turn_color = 'black' if game.turn_color == 'white' else 'white'
     db.session.commit()
 
-    emit('move_made', data, broadcast=True)
-    send_game_data_to_backend({
+    game_data = {
         'game_id': game.id,
         'turn_number': game.turn_number,
         'turn_color': game.turn_color,
+        'current_fen': game.current_fen,
+        'previous_fen': game.previous_fen,
         'white_player_points': game.white_player_points,
         'black_player_points': game.black_player_points,
-        'game_complete': game.game_complete
-    })
+        'game_complete': game.game_complete,
+        'game_outcome': game.game_outcome,
+        'game_champion': game.game_champion
+    }
+
+    emit('move_made', game_data, broadcast=True)
+    send_game_data_to_backend(game_data)  # Send game data to Rails API
+
+def send_latest(socket):
+        game_data = {
+        'game_id': game.id,
+        'turn_number': game.turn_number,
+        'turn_color': game.turn_color,
+        'current_fen': game.current_fen,
+        'previous_fen': game.previous_fen
+    }
+        socket.emit('latest', game_data)
 
 # Function to send game data to the Rails backend (request to rails backend)
 def send_game_data_to_backend(game_data):
