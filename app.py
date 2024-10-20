@@ -94,7 +94,7 @@ def handle_move(data):
 def handle_end_game(data):
     game_id = data['game_id']
     fen = data['fen']
-    winner = data.get('winner', None)  # The user who won or None for stalemate or draw
+    winner = data.get('winner', None)  # The user who won or None for stalemate or draw - if front end can send winner
     
     game = Game.query.get(game_id)
     
@@ -106,7 +106,7 @@ def handle_end_game(data):
         emit('error', {'message': 'Game already completed'})
         return
     
-    board = chess.Board(fen)
+    board = chess.Board(fen) # using chess engine 
     
     if board.is_checkmate():
         game.game_outcome = 'checkmate'
