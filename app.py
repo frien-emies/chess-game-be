@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit, send 
+from flask_socketio import SocketIO, emit, send
 from flask_cors import CORS
 import requests
 
@@ -42,12 +42,10 @@ with app.app_context():
 # WebSocket handler for starting a new game
 
 @socketio.on('connect')
-def handle_connect(socket):
-    print(socket)
-    qstring = socket.get('QUERY_STRING')
-    print(">>>>>>>>>>")
-    print(qstring)
-    print(">>>>>>>>>>")
+def handle_connect():
+    q_param = request.args.get('q')
+    print(q_param)
+   
     
 
 @socketio.on('start_game')
