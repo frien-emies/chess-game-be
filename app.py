@@ -131,6 +131,8 @@ def handle_end_game(data):
         'turn_number': game.turn_number,
         'turn_color': game.turn_color
     }
+    
+    disconnect()
 
 # Function to send game data to the Rails backend (request to rails backend)
 def send_game_data_to_backend(game_data):
