@@ -4,6 +4,7 @@
 Welcome to the Chess Game Backend API Service. This is a Python Flask API application allows a client to make API calls to endpoints that:
 * return a games current state
 * save a games current state 
+
 Further details about the applications JSON response, endpoints, dependencies, and other general configuration information can be found below. 
 
 ## Cloning Repository and Creating Python Virtual Environment
@@ -58,14 +59,14 @@ the applications Game model by specifying the Model class.
 
 You can exit the Flask Command Shell at any time by clicking the CMD + D keys at the same time. 
 
-#### Dropping the Entire Database
+### Dropping the Entire Database
 To drop all the tables in the database you can run the following command from the the Flask Command Shell: `db.drop_all()`. 
 
-#### Creating the Entire Database
+### Creating the Entire Database
 To create all the tables in the database you can run the following command from the the Flask Command Shell: `db.create_all()`. This will create al lthe tables based on what models you have present in 
 your application. 
 
-#### Deleting All Records from A Table
+### Deleting All Records from A Table
 To delete all the records for a specific tablein the database, run the following commands: `db.session.query(table_name).delete()`. In this case table_name is the name of the class model `Game`. 
 
 After running the above command commit the changes to the database: `db.session.commit()`. 
@@ -79,30 +80,40 @@ To have a specific games state returned you must hit the following API endpoint 
 Here is a sample response for hitting the following endpoint:
 `/api/v1/games/1`
 
-`        {
-            "data": {
-            "id": 1,
-            "type": 'game_information',
-            "attributes": {
-                'turn_number': '2',
-                'turn_color': 'White',
-                'white_player_id': '2',
-                'black_player_id': '1',
-                'white_player_user_name': 'thegrandmaster@gmail.com',
-                'black_player_user_name': 'chesslord@chess.com,
-                'white_player_points': '0',
-                'black_player_points': '0',
-                'game_complete': 'False',
-                'game_outcome': '',
-                'game_champion': ''
-            }
-        }
-    }
-`
+![Screenshot 2024-10-20 at 11 20 01 AM](https://github.com/user-attachments/assets/d1d6f76e-3b32-4a99-b15b-991fbd0cfca1)
 
 ## Other Information: 
 
 ### Versioning 
+
+#### Versioning for Python Libraries 
+This versioning information is also found in the `requirements.txt` file:
+
+- alembic==1.13.3
+- bidict==0.23.1
+- blinker==1.8.2
+- certifi==2024.8.30
+- charset-normalizer==2.0.12
+- click==8.1.7
+- Flask==2.1.2
+- Flask-Migrate==4.0.7
+- Flask-SocketIO==5.1.1
+- Flask-SQLAlchemy==2.5.1
+- h11==0.14.0
+- idna==3.10
+- itsdangerous==2.2.0
+- Jinja2==3.1.4
+- Mako==1.3.5
+- MarkupSafe==3.0.1
+- python-engineio==4.10.1
+- python-socketio==5.11.4
+- requests==2.26.0
+- simple-websocket==1.1.0
+- SQLAlchemy==1.4.39
+- typing_extensions==4.12.2
+- urllib3==1.26.20
+- Werkzeug==2.0.3
+- wsproto==1.2.0
 
 #### API Version: V1 
 
