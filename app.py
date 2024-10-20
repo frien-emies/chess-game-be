@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, send 
 import requests
+import chess
+import chess.engine
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -86,6 +88,49 @@ def handle_move(data):
         'black_player_points': game.black_player_points,
         'game_complete': game.game_complete
     })
+
+# Web socket handler for ending game and disconnecting 
+@socketio.on('disconnect')
+def handle_end_game(data):
+    game_id = data['game_id']
+    fen = data['fen']
+    winner = data.get('winner', None)  # The user who won or None for stalemate or draw
+    
+    game = Game.query.get(game_id)
+    
+    if not game:
+        emit('error', {'message': 'Game not found'})
+        return
+    
+    if game.game_complete:
+        emit('error', {'message': 'Game already completed'})
+        return
+    
+    board = chess.Board(fen)
+    
+    if board.is_checkmate():
+        game.game_outcome = 'checkmate'
+        game.game_champion = winner  
+    elif board.is_stalemate() or board.is_insufficient_material():
+        game.game_outcome = 'stalemate'
+        game.game_champion = None 
+    elif board.is_draw():
+        game.game_outcome = 'draw'
+        game.game_champion = None
+    
+    game.game_complete = True
+    
+    db.session.commit()
+    
+    emit('disconnected', data, broadcast=True)
+    game_data = {
+        'game_id': game.id,
+        'game_outcome': game.game_outcome,
+        'game_champion': game.game_champion,
+        'game_complete': game.game_complete,
+        'turn_number': game.turn_number,
+        'turn_color': game.turn_color
+    }
 
 # Function to send game data to the Rails backend (request to rails backend)
 def send_game_data_to_backend(game_data):
