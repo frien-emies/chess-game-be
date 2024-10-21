@@ -52,7 +52,7 @@ To use the Flask Command Shell run `flask shell` from the command line. This wil
 ### Manipulating the Database with the Flask Command Shell
 The Flask Command Shell has numerous commands for manipulating the applications database. To do so you must first open the command shell from the command line by running `flask shell`.
 Following this you must import the database tables you wish to manipulate. The syntax for doing so follows conventional Python syntax for importing files. For instance, to import the database
-you would run the following line in the Flask Command Shell: `from app import db`.
+you would run the following line in the Flask Command Shell: `from app import Game`.
 
 After importing the database, you will need to import your models to access the database tables. In this application the command to do so will look like this: `from app import Game`. This will import
 the applications Game model by specifying the Model class.
