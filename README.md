@@ -75,7 +75,7 @@ After running the above command commit the changes to the database: `db.session.
 To seed the database with sample game data, run python seed.py from the project root directory.
 
 ## Endpoints and JSON Contract
-The Chess Game Backend API has x endpoints. 
+The Chess Game Backend API has the following endpoints. 
 
 ### `Return a Games Current State by ID`
 To have a specific games state returned you must hit the following API endpoint `/api/v1/games/:game_id` where the id corresponds to a particular games id. 
