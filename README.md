@@ -117,6 +117,7 @@ This versioning information is also found in the `requirements.txt` file:
 - urllib3==1.26.20
 - Werkzeug==2.0.3
 - wsproto==1.2.0
+- Flask-Cors==5.0.0
 
 #### API Version: V1 
 
