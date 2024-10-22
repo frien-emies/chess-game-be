@@ -1,4 +1,4 @@
-#!/Users/gwynethpatrick/Desktop/chess/chess-game-be/venv/bin/python3
+#!/Users/seth/turing_work/4mod/chess-game-be/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

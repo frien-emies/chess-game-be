@@ -4,6 +4,7 @@ blinker==1.8.2
 certifi==2024.8.30
 charset-normalizer==2.0.12
 click==8.1.7
+eventlet==0.37.0
 Flask==2.1.2
 Flask-Migrate==4.0.7
 Flask-SocketIO==5.1.1

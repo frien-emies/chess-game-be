@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit, send
+from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room
 from flask_cors import CORS
 import requests
 
 # Initialize the Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 # SQLite Database configuration
@@ -39,46 +39,11 @@ class Game(db.Model):
 with app.app_context():
     db.create_all()
 
-# WebSocket handler for starting a new game
-
-@socketio.on('connect')
-def handle_connect():
-    q_param = request.args.get('q')
-    game = Game.query.get(q_param)  
+def emit_latest(game):
     game_data = {
         'game_id': game.id,
-        'turn_number': game.turn_number,
-        'turn_color': game.turn_color,
-        'current_fen': game.current_fen,
-        'previous_fen': game.previous_fen,
-        'white_player_points': game.white_player_points,
-        'black_player_points': game.black_player_points,
-        'game_complete': game.game_complete,
-        'game_outcome': game.game_outcome,
-        'game_champion': game.game_champion
-}
-    emit(f'game_info_{q_param}' , game_data)
-
-@socketio.on('start_game')
-def handle_start_game(data):
-    game = Game(
-        turn_number=1,
-        turn_color='white',
-        previous_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 
-        current_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-        white_player_id=data['white_player_id'],
-        black_player_id=data['black_player_id'],
-        white_player_user_name=data['white_player_user_name'],
-        black_player_user_name=data['black_player_user_name'],
-        white_player_points=0,
-        black_player_points=0,
-        game_complete=False
-    )
-    db.session.add(game)
-    db.session.commit()
-
-    game_data = {
-        'game_id': game.id,
+        'white_player_id': game.white_player_id,
+        'black_player_id': game.black_player_id,
         'turn_number': game.turn_number,
         'turn_color': game.turn_color,
         'current_fen': game.current_fen,
@@ -89,15 +54,35 @@ def handle_start_game(data):
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion
     }
-    
-    emit('game_started', game_data, broadcast=True)
 
-# WebSocket handler for making a move
+    emit('latest' , game_data, room=str(game.id))
+
+@socketio.on('connect')
+def handle_connect():
+    game_id = request.args.get('gameId')
+    join_room(str(game_id))
+    game = Game.query.get(game_id) 
+    emit_latest(game)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+    sid = request.sid
+    print(f'Client {sid} disconnected')
+    # Get all the rooms the client is in
+    client_rooms = rooms(sid=sid)
+    for room in client_rooms:
+        if room != sid:  # Avoid processing the client's personal room (SID room)
+            leave_room(room)
+            # Check if the room has no other participants
+            if not socketio.server.manager.rooms['/'].get(room):
+                close_room(room)
+                print(f'Room {room} is empty and has been closed')
 
 @socketio.on('make_move')
 def handle_move(data):
     game_id = data['game_id']
-    fen = data['fen']  # Receive FEN from the front-end move
+    fen = data['current_fen']
 
     game = Game.query.get(game_id)
     if not game:
@@ -106,47 +91,29 @@ def handle_move(data):
 
     game.turn_number += 1
     game.previous_fen = game.current_fen
-    game.current_fen = fen  # Update current FEN from the move
-    game.turn_color = 'black' if game.turn_color == 'white' else 'white'
+    game.current_fen = fen
+    game.turn_color = 'white' if 'w' in game.current_fen else 'black'
     db.session.commit()
+    emit_latest(game)
 
-    game_data = {
-        'game_id': game.id,
-        'turn_number': game.turn_number,
-        'turn_color': game.turn_color,
-        'current_fen': game.current_fen,
-        'previous_fen': game.previous_fen,
-        'white_player_points': game.white_player_points,
-        'black_player_points': game.black_player_points,
-        'game_complete': game.game_complete,
-        'game_outcome': game.game_outcome,
-        'game_champion': game.game_champion
-    }
+@socketio.on('end_game')
+def handle_end_game(data):
+    game_id = data['game_id']
+    current_fen = data['current_fen']
+    game_outcome = data['game_outcome']
+    game_champion = data['game_champion']
 
-    emit('move_made', game_data, broadcast=True)
-    send_game_data_to_backend(game_data)  # Send game data to Rails API
-
-def send_latest(socket):
-        game_data = {
-        'game_id': game.id,
-        'turn_number': game.turn_number,
-        'turn_color': game.turn_color,
-        'current_fen': game.current_fen,
-        'previous_fen': game.previous_fen
-    }
-        socket.emit('latest', game_data)
-
-
-# Function to send game data to the Rails backend (request to rails backend)
-def send_game_data_to_backend(game_data):
-    url = "https://chess-with-frein-emies-e45d9fb62d80.herokuapp.com/api/v1/games"  # Production API, change to local host for development 
-    headers = {"Content-Type": "application/json"}
-    try:
-        response = requests.post(url, json=game_data, headers=headers)
-        if response.status_code != 200:
-            print(f"Error sending data to backend: {response.status_code}")
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to connect to backend: {e}")
+    game = Game.query.get(game_id)
+    if not game:
+        emit('error', {'message': 'Game not found'})
+        return
+    
+    game.previous_fen = game.current_fen
+    game.current_fen = current_fen
+    game.game_champion = game_champion
+    game.game_outcome = game_outcome
+    db.session.commit
+    emit_latest(game)
 
 @app.route('/games/<game_id>', methods=['GET'])
 def get_game_state(game_id):
@@ -175,7 +142,18 @@ def get_game_state(game_id):
         }
     }
 )
-
 # Run the Flask app
 if __name__ == '__main__':
-    socketio.run(app)      #change parameters to use debug=True when testing (app, debug=True)
+    socketio.run(app, debug=True)
+    #change parameters to use debug=True when testing (app, debug=True)
+
+# Function to send game data to the Rails backend (request to rails backend)
+def send_game_data_to_backend(game_data):
+    url = "https://chess-with-frein-emies-e45d9fb62d80.herokuapp.com/api/v1/games"  # Production API, change to local host for development 
+    headers = {"Content-Type": "application/json"}
+    try:
+        response = requests.post(url, json=game_data, headers=headers)
+        if response.status_code != 200:
+            print(f"Error sending data to backend: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to connect to backend: {e}")
