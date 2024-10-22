@@ -127,6 +127,6 @@ This versioning information is also found in the `requirements.txt` file:
 
 ### Deployment
 
-#### Deployed Site: [Vercel Application](https://chess-game-ybezrcbs2-jcl461437s-projects.vercel.app)
+#### Deployed Site: [Vercel Application](https://chess-game-kfbrt8lsd-jcl461437s-projects.vercel.app)
 
 
