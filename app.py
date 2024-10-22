@@ -1,8 +1,10 @@
+import requests
+import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room
 from flask_cors import CORS
-import requests
+
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -142,9 +144,15 @@ def get_game_state(game_id):
         }
     }
 )
+
+port = int(os.environ.get('PORT', 5000))
+host = os.environ.get('HOST', 'localhost')
+print(f'port <> {port}')
+print(f'host <> {host}')
+
 # Run the Flask app
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, host=host, port=port, debug=True)
     #change parameters to use debug=True when testing (app, debug=True)
 
 # Function to send game data to the Rails backend (request to rails backend)
