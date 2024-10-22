@@ -127,7 +127,8 @@ This versioning information is also found in the `requirements.txt` file:
 
 ### Deployment
 
-#### Deployed Site: [Render Applicatioin]( ) 
-                    [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
+#### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)- [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
+
+                    
 
 
