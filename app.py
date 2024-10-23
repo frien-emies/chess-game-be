@@ -2,7 +2,7 @@ import requests
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room
+from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room, disconnect
 from flask_cors import CORS
 
 
@@ -62,13 +62,20 @@ def emit_latest(game):
 @socketio.on('connect')
 def handle_connect():
     game_id = request.args.get('gameId')
+    if not game_id:
+        print('no game id provided.')
+        emit('error', {'message': 'Connection request must contain game id.'})
+        return
+    game = Game.query.get(game_id)
     join_room(str(game_id))
-    game = Game.query.get(game_id) 
+    if not game:
+        print(f'no game found for id {game_id}')
+        emit('error', {'message': 'Game not found'})
+        return
     emit_latest(game)
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    print('Client disconnected')
     sid = request.sid
     print(f'Client {sid} disconnected')
     # Get all the rooms the client is in
@@ -80,6 +87,7 @@ def handle_disconnect():
             if not socketio.server.manager.rooms['/'].get(room):
                 close_room(room)
                 print(f'Room {room} is empty and has been closed')
+    disconnect()
 
 @socketio.on('make_move')
 def handle_move(data):
@@ -94,7 +102,10 @@ def handle_move(data):
     game.turn_number += 1
     game.previous_fen = game.current_fen
     game.current_fen = fen
-    game.turn_color = 'white' if 'w' in game.current_fen else 'black'
+    if 'w' in fen:
+        game.turn_color = 'white'
+    else:
+        game.turn_color = 'black'
     db.session.commit()
     emit_latest(game)
 
@@ -109,16 +120,18 @@ def handle_end_game(data):
     if not game:
         emit('error', {'message': 'Game not found'})
         return
-    
+
     game.previous_fen = game.current_fen
     game.current_fen = current_fen
     game.game_champion = game_champion
     game.game_outcome = game_outcome
-    db.session.commit
+    game.game_complete = True
+    db.session.commit()
     emit_latest(game)
 
 @app.route('/games/<game_id>', methods=['GET'])
 def get_game_state(game_id):
+    print('handling get game state event')
     game = Game.query.get(game_id)
     if not game:
         return jsonify({'message': 'Game not found'}), 404
@@ -147,8 +160,8 @@ def get_game_state(game_id):
 
 port = int(os.environ.get('PORT', 5000))
 host = os.environ.get('HOST', 'localhost')
-print(f'port <> {port}')
-print(f'host <> {host}')
+print(f'port <><> {port}')
+print(f'host <><> {host}')
 
 # Run the Flask app
 if __name__ == '__main__':
