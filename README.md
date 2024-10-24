@@ -111,7 +111,7 @@ Here is a sample response for hitting the following endpoint:
 And this is the corresponding JSON response
 
 
-![Screenshot 2024-10-24 at 2 51 39 PM](https://github.com/user-attachments/assets/a5cb84ec-faa6-4419-b768-0891e68ca332)
+![Screenshot 2024-10-24 at 4 02 19 PM](https://github.com/user-attachments/assets/c3a68d66-acf0-44a6-b9b3-51e6154ac26b)
 
 
 ## Other Information: 
@@ -121,34 +121,34 @@ And this is the corresponding JSON response
 #### Versioning for Python Libraries 
 This versioning information is also found in the `requirements.txt` file:
 
-alembic==1.13.3
-bidict==0.23.1
-blinker==1.8.2
-certifi==2024.8.30
-charset-normalizer==2.0.12
-click==8.1.7
-eventlet==0.37.0
-Flask==2.1.2
-Flask-Migrate==4.0.7
-Flask-SocketIO==5.1.1
-Flask-SQLAlchemy==2.5.1
-h11==0.14.0
-idna==3.10
-itsdangerous==2.2.0
-Jinja2==3.1.4
-Mako==1.3.5
-MarkupSafe==3.0.1
-python-engineio==4.10.1
-python-socketio==5.11.4
-requests==2.26.0
-simple-websocket==1.1.0
-SQLAlchemy==1.4.39
-typing_extensions==4.12.2
-urllib3==1.26.20
-Werkzeug==2.0.3
-wsproto==1.2.0
-Flask-Cors==5.0.0
-dotenv==0.19.1
+- alembic==1.13.3
+- bidict==0.23.1
+- blinker==1.8.2
+- certifi==2024.8.30
+- charset-normalizer==2.0.12
+- click==8.1.7
+- eventlet==0.37.0
+- Flask==2.1.2
+- Flask-Migrate==4.0.7
+- Flask-SocketIO==5.1.1
+- Flask-SQLAlchemy==2.5.1
+- h11==0.14.0
+- idna==3.10
+- itsdangerous==2.2.0
+- Jinja2==3.1.4
+- Mako==1.3.5
+- MarkupSafe==3.0.1
+- python-engineio==4.10.1
+- python-socketio==5.11.4
+- requests==2.26.0
+- simple-websocket==1.1.0
+- SQLAlchemy==1.4.39
+- typing_extensions==4.12.2
+- urllib3==1.26.20
+- Werkzeug==2.0.3
+- wsproto==1.2.0
+- Flask-Cors==5.0.0
+- dotenv==0.19.1
 
 #### API Version: V1 
 
