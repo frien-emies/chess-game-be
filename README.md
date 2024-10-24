@@ -111,7 +111,7 @@ Here is a sample response for hitting the following endpoint:
 And this is the corresponding JSON response
 
 
-![Screenshot 2024-10-24 at 2 51 39 PM](https://github.com/user-attachments/assets/a5cb84ec-faa6-4419-b768-0891e68ca332)
+![Screenshot 2024-10-24 at 4 02 19 PM](https://github.com/user-attachments/assets/c3a68d66-acf0-44a6-b9b3-51e6154ac26b)
 
 
 ## Other Information: 
