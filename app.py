@@ -122,13 +122,11 @@ def handle_move(data):
         game.current_fen = fen
         
         # Update the turn color based on the FEN string
-        game.turn_color = 'white' if 'w' in fen else 'black'
-        
-        db.session.commit()
-        emit_latest(game)
-    else:
-        # If no move was made (FEN did not change), emit an error or handle accordingly
-        emit('error', {'message': 'No move made, FEN unchanged'})
+        # game.turn_color = 'white' if 'w' in fen else 'black'
+
+    # Regardless of FEN change, commit any changes and emit the latest game state
+    db.session.commit()
+    emit_latest(game)  # This will emit the updated state, including white/black usernames
 
 
 @socketio.on('end_game')
