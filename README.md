@@ -14,6 +14,11 @@ the desired directory to create the repository in `git clone your_shh_key`.
 Following this you need to create the Python Virtual Environment since Python is a interpreted language. If you are trying to reactivate or deactivate the virtual environment there are instructions for 
 that as well. 
 
+### Python Version
+Before doing any further setup ensure that you are using `Python 3.12.5`. The `eventlet` module is not compatable with other versions of Python and will cause the application to crash. To change Python
+versions on Mac navigate to the project directory and run this command: `python3.12 -m venv venv`. This will establish a virtuanl environment in this version of Python. Then follow the commands below to 
+activate the virtual environment. 
+
 ### Creating a New Virtual Environment
 1. Install `virtualenv` (if not already installed). `virtualenv` is a tool to create isolated Python environments which we will use for setting up this repository.
 To install run `pip3 install virtualenv`.
@@ -74,6 +79,9 @@ After running the above command commit the changes to the database: `db.session.
 ### Seeding the Database for Testing
 To seed the database with sample game data, run `python3 seed.py` from the project root directory.
 
+## Running the Test Suite
+This application uses Unittest. To run the test suite run the following command: `python3 -m unittest discover`.
+
 ## Endpoints and JSON Contract
 The Chess Game Backend API has the following endpoints. 
 
@@ -88,20 +96,24 @@ Here is a sample response for hitting the following endpoint:
 ## `Create a New Games With Player ID and User Name`
 To have a new games state returned you must hit the following API endpoint `/api/v1/new_game` where a json payload is sent in the request of the following format: 
 
-{"white_player_id": 1, 
-"black_player_id": 2,
+{"white_player_id": "1", 
+"black_player_id": "2",
 "white_player_user_name": "theguy@theguy.com",
 "black_player_user_name": "thegrandmaster@chess.com"}
 
 Here is a sample response for hitting the following endpoint:
 `/api/v1/new_games` with this json body:
 
-{"white_player_id": "1", 
-"black_player_id": "2",
-"white_player_user_name": "theguy@theguy.com",
-"black_player_user_name": "thegrandmaster@chess.com"}
 
-![Screenshot 2024-10-20 at 11 20 01 AM](https://github.com/user-attachments/assets/d1d6f76e-3b32-4a99-b15b-991fbd0cfca1)
+![Screenshot 2024-10-24 at 2 51 45 PM](https://github.com/user-attachments/assets/6136e917-a43b-40cf-a0e2-2558f57c6beb)
+
+
+And this is the corresponding JSON response
+
+
+![Screenshot 2024-10-24 at 2 51 39 PM](https://github.com/user-attachments/assets/a5cb84ec-faa6-4419-b768-0891e68ca332)
+
+
 ## Other Information: 
 
 ### Versioning 
@@ -109,36 +121,38 @@ Here is a sample response for hitting the following endpoint:
 #### Versioning for Python Libraries 
 This versioning information is also found in the `requirements.txt` file:
 
-- alembic==1.13.3
-- bidict==0.23.1
-- blinker==1.8.2
-- certifi==2024.8.30
-- charset-normalizer==2.0.12
-- click==8.1.7
-- Flask==2.1.2
-- Flask-Migrate==4.0.7
-- Flask-SocketIO==5.1.1
-- Flask-SQLAlchemy==2.5.1
-- h11==0.14.0
-- idna==3.10
-- itsdangerous==2.2.0
-- Jinja2==3.1.4
-- Mako==1.3.5
-- MarkupSafe==3.0.1
-- python-engineio==4.10.1
-- python-socketio==5.11.4
-- requests==2.26.0
-- simple-websocket==1.1.0
-- SQLAlchemy==1.4.39
-- typing_extensions==4.12.2
-- urllib3==1.26.20
-- Werkzeug==2.0.3
-- wsproto==1.2.0
-- Flask-Cors==5.0.0
+alembic==1.13.3
+bidict==0.23.1
+blinker==1.8.2
+certifi==2024.8.30
+charset-normalizer==2.0.12
+click==8.1.7
+eventlet==0.37.0
+Flask==2.1.2
+Flask-Migrate==4.0.7
+Flask-SocketIO==5.1.1
+Flask-SQLAlchemy==2.5.1
+h11==0.14.0
+idna==3.10
+itsdangerous==2.2.0
+Jinja2==3.1.4
+Mako==1.3.5
+MarkupSafe==3.0.1
+python-engineio==4.10.1
+python-socketio==5.11.4
+requests==2.26.0
+simple-websocket==1.1.0
+SQLAlchemy==1.4.39
+typing_extensions==4.12.2
+urllib3==1.26.20
+Werkzeug==2.0.3
+wsproto==1.2.0
+Flask-Cors==5.0.0
+dotenv==0.19.1
 
 #### API Version: V1 
 
-#### Python Version: Python 3.13
+#### Python Version: Python 3.12
 
 #### Flask Version: Flask 2.1.2
 
