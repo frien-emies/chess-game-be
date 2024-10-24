@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
 # socketio = SocketIO(app, cors_allowed_origins="*")
-socketio = SocketIO(app, async_mode='gevent', cors_allowed_origions='*')
+socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins='*')
 db = SQLAlchemy(app)
 
 # Define the Game model for SQLite, add more columns if needed FEN etc.
