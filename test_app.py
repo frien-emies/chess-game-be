@@ -57,7 +57,7 @@ class ChessGameTests(unittest.TestCase):
         }
 
         response = self.app.post('/api/v1/new_game', json=payload)
-    
+
         self.assertEqual(response.status_code, 201)
         data = response.get_json()
         self.assertEqual(data['message'], 'New game created')
@@ -74,19 +74,24 @@ class ChessGameTests(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(data['message'], 'No JSON body provided')
 
-    def test_socket_connect_and_make_move(self):
-        socketio_client = socketio.test_client(app, query_string={'gameId': '1'})
-        received = socketio_client.get_received()
-        print(f"Received after connect: {received}")
+def test_socket_connect_and_make_move(self):
+    # Create SocketIO test client linked to socketio instance
+    socketio_client = socketio.test_client(app, query_string={'gameId': '1'})  # Pass gameId in query_string
 
-        self.assertNotIn('error', [r['name'] for r in received], "Game should be found")
-        self.assertIn('latest', [r['name'] for r in received])
+    # Now check the received messages after connecting
+    received = socketio_client.get_received()
+    print(f"Received after connect: {received}")  # Debugging
 
-        socketio_client.emit('make_move', {'game_id': 1, 'current_fen': 'updated_fen_string'})
-        received = socketio_client.get_received()
-        print(f"Received after make_move: {received}")
-        self.assertIn('latest', [r['name'] for r in received])
-        self.assertEqual(received[0]['args'][0]['current_fen'], 'updated_fen_string')
+    # Ensure game was found and connection was successful
+    self.assertNotIn('error', [r['name'] for r in received], "Game should be found")
+    self.assertIn('latest', [r['name'] for r in received])
+
+    # Make a move and check updates
+    socketio_client.emit('make_move', {'game_id': 1, 'current_fen': 'updated_fen_string'})
+    received = socketio_client.get_received()
+    print(f"Received after make_move: {received}")  # Debugging
+    self.assertIn('latest', [r['name'] for r in received])
+    self.assertEqual(received[0]['args'][0]['current_fen'], 'updated_fen_string')
 
 if __name__ == "__main__":
     unittest.main()
