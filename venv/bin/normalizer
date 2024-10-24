@@ -1,4 +1,4 @@
-#!/Users/seth/turing_work/4mod/chess-game-be/venv/bin/python3.12
+#!/Users/janlehigh/turing/4mod/fren-emies/chess-game-be/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
