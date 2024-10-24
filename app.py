@@ -4,11 +4,9 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room
 from flask_cors import CORS
-from flask_wtf.csrf import CSRFProtect
 
 # Initialize the Flask app
 app = Flask(__name__)
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
@@ -146,8 +144,6 @@ def get_game_state(game_id):
     }
 )
 
-@app.route('/api/v1/new_game', methods=['POST'])
-@csrf.exempt
 @app.route('/api/v1/new_game', methods=['POST'])
 def new_game():
     data = request.json
