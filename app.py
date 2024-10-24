@@ -117,7 +117,7 @@ def handle_end_game(data):
     db.session.commit
     emit_latest(game)
 
-@app.route('/games/<game_id>', methods=['GET'])
+@app.route('/api/v1/games/<game_id>', methods=['GET'])
 def get_game_state(game_id):
     game = Game.query.get(game_id)
     if not game:
