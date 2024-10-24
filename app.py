@@ -42,6 +42,9 @@ with app.app_context():
     db.create_all()
 
 def emit_latest(game):
+    if game is None:
+        return  # Handle missing game in the caller
+    
     game_data = {
         'game_id': game.id,
         'white_player_id': game.white_player_id,
@@ -55,9 +58,9 @@ def emit_latest(game):
         'game_complete': game.game_complete,
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion
-    }
+    } # add user names to game data
 
-    emit('latest' , game_data, room=str(game.id))
+    emit('latest', game_data, room=str(game.id))
 
 @socketio.on('connect')
 def handle_connect():
@@ -98,7 +101,7 @@ def handle_move(data):
     if not game:
         emit('error', {'message': 'Game not found'})
         return
-
+    # add logic to only increment turn number if move is made not aka fen is changed
     game.turn_number += 1
     game.previous_fen = game.current_fen
     game.current_fen = fen
