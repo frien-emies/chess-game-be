@@ -192,7 +192,7 @@ def new_game():
 
     db.session.add(new_game)
     db.session.commit()
-
+    
     return jsonify(
         {
             'message': 'New game created',
