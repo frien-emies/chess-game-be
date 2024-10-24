@@ -158,6 +158,6 @@ dotenv==0.19.1
 
 #### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)- [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
 
-                    
+
 
 
