@@ -79,6 +79,9 @@ After running the above command commit the changes to the database: `db.session.
 ### Seeding the database for testing
 To seed the database with sample game data, run python seed.py from the project root directory.
 
+## Running the Test Suite
+This application uses Unittest. To run the test suite run the following command: `python3 -m unittest discover`.
+
 ## Endpoints and JSON Contract
 The Chess Game Backend API has the following endpoints. 
 
@@ -93,20 +96,24 @@ Here is a sample response for hitting the following endpoint:
 ## `Create a New Games With Player ID and User Name`
 To have a new games state returned you must hit the following API endpoint `/api/v1/new_game` where a json payload is sent in the request of the following format: 
 
-{"white_player_id": 1, 
-"black_player_id": 2,
+{"white_player_id": "1", 
+"black_player_id": "2",
 "white_player_user_name": "theguy@theguy.com",
 "black_player_user_name": "thegrandmaster@chess.com"}
 
 Here is a sample response for hitting the following endpoint:
 `/api/v1/new_games` with this json body:
 
-{"white_player_id": "1", 
-"black_player_id": "2",
-"white_player_user_name": "theguy@theguy.com",
-"black_player_user_name": "thegrandmaster@chess.com"}
 
-![Screenshot 2024-10-20 at 11 20 01 AM](https://github.com/user-attachments/assets/d1d6f76e-3b32-4a99-b15b-991fbd0cfca1)
+![Screenshot 2024-10-24 at 2 51 45 PM](https://github.com/user-attachments/assets/6136e917-a43b-40cf-a0e2-2558f57c6beb)
+
+
+And this is the corresponding JSON response
+
+
+![Screenshot 2024-10-24 at 2 51 39 PM](https://github.com/user-attachments/assets/a5cb84ec-faa6-4419-b768-0891e68ca332)
+
+
 ## Other Information: 
 
 ### Versioning 
