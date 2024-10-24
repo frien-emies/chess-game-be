@@ -58,7 +58,7 @@ def emit_latest(game):
         'game_complete': game.game_complete,
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion
-    }
+    } # add user names to game data
 
     emit('latest', game_data, room=str(game.id))
 
@@ -98,7 +98,7 @@ def handle_move(data):
     if not game:
         emit('error', {'message': 'Game not found'})
         return
-
+    # add logic to only increment turn number if move is made not aka fen is changed
     game.turn_number += 1
     game.previous_fen = game.current_fen
     game.current_fen = fen
