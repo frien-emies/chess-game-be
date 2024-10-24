@@ -2,7 +2,7 @@ import requests
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit, send, rooms, join_room, leave_room, close_room, disconnect
+from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 from flask_cors import CORS
 
 
@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 socketio = SocketIO(app, cors_allowed_origins="*")
 db = SQLAlchemy(app)
 
-# Define the Game model for SQLite, add more columns if needed FEN etc.
+# Define the Game model for SQLite, add more columns if needed (FEN, etc.)
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     turn_number = db.Column(db.Integer, nullable=False)
@@ -37,10 +37,13 @@ class Game(db.Model):
     game_outcome = db.Column(db.String(50), nullable=True)
     game_champion = db.Column(db.String(50), nullable=True)
 
-# Create the database tables (this is for development, remove in production)
+
+# Create the database tables (for development, remove in production)
 with app.app_context():
     db.create_all()
 
+
+# Helper function to emit the latest game data
 def emit_latest(game):
     if game is None:
         return  # Handle missing game in the caller
@@ -55,32 +58,41 @@ def emit_latest(game):
         'previous_fen': game.previous_fen,
         'white_player_points': game.white_player_points,
         'black_player_points': game.black_player_points,
+        'white_player_user_name': game.white_player_user_name,
+        'black_player_user_name': game.black_player_user_name,
         'game_complete': game.game_complete,
         'game_outcome': game.game_outcome,
         'game_champion': game.game_champion
-    } # add user names to game data
-
+    }
+    
     emit('latest', game_data, room=str(game.id))
 
+
+# SocketIO event handlers
 @socketio.on('connect')
 def handle_connect():
     game_id = request.args.get('gameId')
     if not game_id:
-        print('no game id provided.')
+        print('No game id provided.')
         emit('error', {'message': 'Connection request must contain game id.'})
         return
+    
     game = Game.query.get(game_id)
     join_room(str(game_id))
+    
     if not game:
-        print(f'no game found for id {game_id}')
+        print(f'No game found for id {game_id}')
         emit('error', {'message': 'Game not found'})
         return
+    
     emit_latest(game)
+
 
 @socketio.on('disconnect')
 def handle_disconnect():
     sid = request.sid
     print(f'Client {sid} disconnected')
+    
     # Get all the rooms the client is in
     client_rooms = rooms(sid=sid)
     for room in client_rooms:
@@ -92,6 +104,7 @@ def handle_disconnect():
                 print(f'Room {room} is empty and has been closed')
     disconnect()
 
+
 @socketio.on('make_move')
 def handle_move(data):
     game_id = data['game_id']
@@ -101,16 +114,22 @@ def handle_move(data):
     if not game:
         emit('error', {'message': 'Game not found'})
         return
-    # add logic to only increment turn number if move is made not aka fen is changed
-    game.turn_number += 1
-    game.previous_fen = game.current_fen
-    game.current_fen = fen
-    if 'w' in fen:
-        game.turn_color = 'white'
+
+    # Check if the FEN is different from the current one
+    if game.current_fen != fen:
+        game.turn_number += 1
+        game.previous_fen = game.current_fen
+        game.current_fen = fen
+        
+        # Update the turn color based on the FEN string
+        game.turn_color = 'white' if 'w' in fen else 'black'
+        
+        db.session.commit()
+        emit_latest(game)
     else:
-        game.turn_color = 'black'
-    db.session.commit()
-    emit_latest(game)
+        # If no move was made (FEN did not change), emit an error or handle accordingly
+        emit('error', {'message': 'No move made, FEN unchanged'})
+
 
 @socketio.on('end_game')
 def handle_end_game(data):
@@ -132,16 +151,17 @@ def handle_end_game(data):
     db.session.commit()
     emit_latest(game)
 
+
+# API routes
 @app.route('/games/<game_id>', methods=['GET'])
 def get_game_state(game_id):
-    print('handling get game state event')
+    print('Handling get game state event')
     game = Game.query.get(game_id)
     if not game:
         return jsonify({'message': 'Game not found'}), 404
 
-    return jsonify(
-        {
-            "data": {
+    return jsonify({
+        "data": {
             "id": game.id,
             "type": 'game_information',
             "attributes": {
@@ -158,20 +178,10 @@ def get_game_state(game_id):
                 'game_champion': game.game_champion
             }
         }
-    }
-)
+    })
 
-port = int(os.environ.get('PORT', 5000))
-host = os.environ.get('HOST', 'localhost')
-print(f'port <><> {port}')
-print(f'host <><> {host}')
 
-# Run the Flask app
-if __name__ == '__main__':
-    socketio.run(app, host=host, port=port, debug=True)
-    #change parameters to use debug=True when testing (app, debug=True)
-
-# Function to send game data to the Rails backend (request to rails backend)
+# Function to send game data to the Rails backend (request to Rails backend)
 def send_game_data_to_backend(game_data):
     url = "https://chess-with-frein-emies-e45d9fb62d80.herokuapp.com/api/v1/games"  # Production API, change to local host for development 
     headers = {"Content-Type": "application/json"}
@@ -181,3 +191,11 @@ def send_game_data_to_backend(game_data):
             print(f"Error sending data to backend: {response.status_code}")
     except requests.exceptions.RequestException as e:
         print(f"Failed to connect to backend: {e}")
+
+
+# Run the Flask app
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', 'localhost')
+    socketio.run(app, host=host, port=port, debug=True)
+
