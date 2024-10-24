@@ -122,7 +122,7 @@ def handle_move(data):
         game.current_fen = fen
         
         # Update the turn color based on the FEN string
-        # game.turn_color = 'white' if 'w' in fen else 'black'
+        game.turn_color = 'white' if 'w' in fen else 'black'
 
     # Regardless of FEN change, commit any changes and emit the latest game state
     db.session.commit()
