@@ -46,6 +46,33 @@ class ChessGameTests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         data = response.get_json()
         self.assertEqual(data['message'], 'Game not found')
+    
+    def test_new_game_creation(self):
+        # payload to create a new game
+        payload = {
+            'white_player_id': 1,
+            'black_player_id': 2,
+            'white_player_user_name': 'Player1',
+            'black_player_user_name': 'Player2'
+        }
+
+        response = self.app.post('/api/v1/new_game', json=payload)
+    
+        self.assertEqual(response.status_code, 201)
+        data = response.get_json()
+        self.assertEqual(data['message'], 'New game created')
+        self.assertIn('game', data)
+        self.assertEqual(data['game']['attributes']['turn_number'], 1)
+        self.assertEqual(data['game']['attributes']['turn_color'], 'white')
+        self.assertEqual(data['game']['attributes']['white_player_id'], 1)
+        self.assertEqual(data['game']['attributes']['black_player_id'], 2)
+    
+    def test_no_json_body(self):
+        response = self.app.post('/api/v1/new_game')
+
+        self.assertEqual(response.status_code, 400)
+        data = response.get_json()
+        self.assertEqual(data['message'], 'No JSON body provided')
 
     def test_socket_connect_and_make_move(self):
         socketio_client = socketio.test_client(app, query_string={'gameId': '1'})
