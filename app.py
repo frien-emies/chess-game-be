@@ -164,6 +164,11 @@ def get_game_state(game_id):
 @app.route('/api/v1/new_game', methods=['POST'])
 def new_game():
     data = request.json
+
+    # Handle missing JSON body
+    if not data:
+        return jsonify({'message': 'No JSON body provided'}), 400
+
     white_player_id = data.get('white_player_id')
     black_player_id = data.get('black_player_id')
     white_player_user_name = data.get('white_player_user_name')
@@ -171,9 +176,9 @@ def new_game():
 
     new_game = Game(
         turn_number=1,
-        turn_color='white',  
-        previous_fen=None,   
-        current_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 
+        turn_color='white',
+        previous_fen=None,
+        current_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         white_player_id=white_player_id,
         black_player_id=black_player_id,
         white_player_user_name=white_player_user_name,
@@ -186,7 +191,29 @@ def new_game():
     db.session.add(new_game)
     db.session.commit()
 
-    return jsonify({'message': 'New game created', 'game_id': new_game.id}), 201
+    return jsonify(
+        {
+            'message': 'New game created',
+            'game': {
+                'id': new_game.id,
+                'type': 'game_information',
+                'attributes': {
+                    'turn_number': new_game.turn_number,
+                    'turn_color': new_game.turn_color,
+                    'white_player_id': new_game.white_player_id,
+                    'black_player_id': new_game.black_player_id,
+                    'white_player_user_name': new_game.white_player_user_name,
+                    'black_player_user_name': new_game.black_player_user_name,
+                    'white_player_points': new_game.white_player_points,
+                    'black_player_points': new_game.black_player_points,
+                    'game_complete': new_game.game_complete,
+                    # Include any additional game state information
+                    'game_outcome': new_game.game_outcome,
+                    'game_champion': new_game.game_champion
+                }
+            }
+        }
+    ), 201
 
 port = int(os.environ.get('PORT', 5000))
 host = os.environ.get('HOST', 'localhost')
