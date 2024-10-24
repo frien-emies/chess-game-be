@@ -71,8 +71,8 @@ To delete all the records for a specific tablein the database, run the following
 
 After running the above command commit the changes to the database: `db.session.commit()`. 
 
-### Seeding the database for testing
-To seed the database with sample game data, run python seed.py from the project root directory.
+### Seeding the Database for Testing
+To seed the database with sample game data, run `python3 seed.py` from the project root directory.
 
 ## Endpoints and JSON Contract
 The Chess Game Backend API has the following endpoints. 
