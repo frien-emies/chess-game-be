@@ -42,6 +42,9 @@ with app.app_context():
     db.create_all()
 
 def emit_latest(game):
+    if game is None:
+        return  # Handle missing game in the caller
+    
     game_data = {
         'game_id': game.id,
         'white_player_id': game.white_player_id,
@@ -57,14 +60,19 @@ def emit_latest(game):
         'game_champion': game.game_champion
     }
 
-    emit('latest' , game_data, room=str(game.id))
+    emit('latest', game_data, room=str(game.id))
 
 @socketio.on('connect')
 def handle_connect():
     game_id = request.args.get('gameId')
-    join_room(str(game_id))
-    game = Game.query.get(game_id) 
-    emit_latest(game)
+    game = Game.query.get(game_id)
+    if game is None:
+        print(f"Game with id {game_id} not found")  # Debugging line
+        emit('error', {'message': 'Game not found'})
+    else:
+        print(f"Game with id {game_id} found: {game}")  # Debugging line
+        join_room(str(game_id))
+        emit_latest(game)
 
 @socketio.on('disconnect')
 def handle_disconnect():
