@@ -144,6 +144,32 @@ def get_game_state(game_id):
         }
     }
 )
+@app.route('/api/v1/new_game', methods=['POST'])
+def new_game():
+    data = request.json
+    white_player_id = data.get('white_player_id')
+    black_player_id = data.get('black_player_id')
+    white_player_user_name = data.get('white_player_user_name')
+    black_player_user_name = data.get('black_player_user_name')
+
+    new_game = Game(
+        turn_number=1,
+        turn_color='white',  
+        previous_fen=None,   
+        current_fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 
+        white_player_id=white_player_id,
+        black_player_id=black_player_id,
+        white_player_user_name=white_player_user_name,
+        black_player_user_name=black_player_user_name,
+        white_player_points=0,
+        black_player_points=0,
+        game_complete=False
+    )
+
+    db.session.add(new_game)
+    db.session.commit()
+
+    return jsonify({'message': 'New game created', 'game_id': new_game.id}), 201
 
 port = int(os.environ.get('PORT', 5000))
 host = os.environ.get('HOST', 'localhost')
