@@ -14,6 +14,11 @@ the desired directory to create the repository in `git clone your_shh_key`.
 Following this you need to create the Python Virtual Environment since Python is a interpreted language. If you are trying to reactivate or deactivate the virtual environment there are instructions for 
 that as well. 
 
+### Python Version
+Before doing any further setup ensure that you are using `Python 3.12.5`. The `eventlet` module is not compatable with other versions of Python and will cause the application to crash. To change Python
+versions on Mac navigate to the project directory and run this command: `python3.12 -m venv venv`. This will establish a virtuanl environment in this version of Python. Then follow the commands below to 
+activate the virtual environment. 
+
 ### Creating a New Virtual Environment
 1. Install `virtualenv` (if not already installed). `virtualenv` is a tool to create isolated Python environments which we will use for setting up this repository.
 To install run `pip3 install virtualenv`.
