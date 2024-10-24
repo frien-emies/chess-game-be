@@ -138,7 +138,7 @@ This versioning information is also found in the `requirements.txt` file:
 
 #### API Version: V1 
 
-#### Python Version: Python 3.13
+#### Python Version: Python 3.12
 
 #### Flask Version: Flask 2.1.2
 
