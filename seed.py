@@ -19,7 +19,7 @@ games = [
     },
     {
         'turn_number': 20,
-        'turn_color': 'black',
+        'turn_color': 'white',
         'previous_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'current_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'white_player_id': 3,
