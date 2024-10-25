@@ -1,16 +1,16 @@
 from app import db, Game
 
-# Sample data to seed the database
+# Updated sample data to seed the database
 games = [
     {
-        'turn_number': 10,
+        'turn_number': 0,
         'turn_color': 'white',
         'previous_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'current_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'white_player_id': 1,
         'black_player_id': 2,
-        'white_player_user_name': 'Alice',
-        'black_player_user_name': 'Bob',
+        'white_player_user_name': 'Bob',
+        'black_player_user_name': 'Rob',
         'white_player_points': 0,
         'black_player_points': 0,
         'game_complete': False,
@@ -18,14 +18,14 @@ games = [
         'game_champion': None
     },
     {
-        'turn_number': 20,
+        'turn_number': 0,
         'turn_color': 'white',
         'previous_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'current_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'white_player_id': 3,
-        'black_player_id': 4,
-        'white_player_user_name': 'Charlie',
-        'black_player_user_name': 'David',
+        'black_player_id': 1,
+        'white_player_user_name': 'Knob',
+        'black_player_user_name': 'Bob',
         'white_player_points': 0,
         'black_player_points': 0,
         'game_complete': True,
@@ -33,14 +33,14 @@ games = [
         'game_champion': None
     },
     {
-        'turn_number': 5,
+        'turn_number': 0,
         'turn_color': 'white',
         'previous_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'current_fen': "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         'white_player_id': 5,
-        'black_player_id': 6,
-        'white_player_user_name': 'Eve',
-        'black_player_user_name': 'Frank',
+        'black_player_id': 1,
+        'white_player_user_name': 'Kat',
+        'black_player_user_name': 'Bob',
         'white_player_points': 0,
         'black_player_points': 0,
         'game_complete': False,
