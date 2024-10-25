@@ -1,6 +1,6 @@
 from app import db, Game
 
-# Updated sample data to seed the database
+# Updated sample data to the database
 games = [
     {
         'turn_number': 0,
