@@ -1,5 +1,13 @@
 # Chess Game Backend API
 
+#### API Version: V1 
+
+#### Python Version: Python 3.12
+
+#### Flask Version: Flask 2.1.2
+
+#### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)- [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
+
 ## Overview
 Welcome to the Chess Game Backend API Service. This is a Python Flask API application allows a client to make API calls to endpoints that:
 * return a games current state
@@ -94,7 +102,7 @@ Here is a sample response for hitting the following endpoint:
 ![Screenshot 2024-10-20 at 11 20 01 AM](https://github.com/user-attachments/assets/d1d6f76e-3b32-4a99-b15b-991fbd0cfca1)
 
 ## `Create a New Games With Player ID and User Name`
-To have a new games state returned you must hit the following API endpoint `/api/v1/new_game` where a json payload is sent in the request of the following format: 
+To have a new games state returned you must hit the following API endpoint `/api/v1/:new_game` where a json payload is sent in the request of the following format: 
 
 {"white_player_id": "1", 
 "black_player_id": "2",
@@ -149,15 +157,4 @@ This versioning information is also found in the `requirements.txt` file:
 - wsproto==1.2.0
 - Flask-Cors==5.0.0
 - dotenv==0.19.1
-
-#### API Version: V1 
-
-#### Python Version: Python 3.12
-
-#### Flask Version: Flask 2.1.2
-
-#### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)- [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
-
-                    
-
 
