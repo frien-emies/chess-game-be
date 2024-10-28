@@ -6,7 +6,7 @@
 
 #### Flask Version: Flask 2.1.2
 
-#### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)- [Vercel Application](https://chess-game-e2mnf6leb-jcl461437s-projects.vercel.app)
+#### Deployed Site: [Render Applicatioin](https://chess-game-be-fmpc.onrender.com)
 
 ## Overview
 Welcome to the Chess Game Backend API Service. This is a Python Flask API application allows a client to make API calls to endpoints that:
